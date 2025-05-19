@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import config from '@/config/app.config.ts';
+import { APP_CONFIG } from '@/config/app.config.ts';
 
 const connectDatabase = async () => {
     try {
-        await mongoose.connect(config.MONGO_URI);
+        await mongoose.connect(APP_CONFIG.MONGO_URI);
         console.log('✅ MongoDB connected');
     } catch (error) {
         console.error('❌ MongoDB connection error', error);
