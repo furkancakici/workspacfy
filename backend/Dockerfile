@@ -20,4 +20,4 @@ COPY --from=builder /app/dist ./dist
 
 CMD ["npm", "start"]
 
-EXPOSE 5000 
+EXPOSE 5001 
