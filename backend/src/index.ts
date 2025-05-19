@@ -9,18 +9,21 @@ import { HTTP_STATUS } from './config/http.config.ts';
 import asyncHandler from './middlewares/async-handler.middleware.ts';
 import { BadRequestException } from './utils/app-error.ts';
 import { ErrorCodeEnum } from './enums/error-code.enum.ts';
+import helmet from 'helmet';
 
 const app = express();
 const BASE_PATH = APP_CONFIG.BASE_PATH;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 app.use(
     cors({
         origin: APP_CONFIG.FRONTEND_ORIGIN,
         credentials: true,
     })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(
     session({
         name: 'session',

@@ -17,6 +17,4 @@ const appConfig = () => ({
     FRONTEND_GOOGLE_CALLBACK_URL: getEnv('FRONTEND_GOOGLE_CALLBACK_URL', 'http://localhost:3000/auth/google/callback'),
 });
 
-export default appConfig();
-
 export const APP_CONFIG = appConfig();
