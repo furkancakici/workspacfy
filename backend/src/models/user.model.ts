@@ -1,4 +1,4 @@
-import { compareValue, hashValue } from '@/utils/bcrypt.ts';
+import { compareValue, hashValue } from '@/utils/bcrypt';
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface UserDocument extends Document {

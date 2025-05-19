@@ -1,6 +1,6 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import { HTTP_STATUS } from '@/config/http.config.ts';
-import { AppError } from '@/utils/app-error.ts';
+import { HTTP_STATUS } from '@/config/http.config';
+import { AppError } from '@/utils/app-error';
 
 const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction): any => {
     console.error(`Error Occurred on PATH: ${req.path}`, err);

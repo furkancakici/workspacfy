@@ -1,4 +1,4 @@
-import { TaskPriorityEnum, TaskPriorityEnumType, TaskStatusEnum, TaskStatusEnumType } from '@/enums/task.enum.ts';
+import { TaskPriorityEnum, TaskPriorityEnumType, TaskStatusEnum, TaskStatusEnumType } from '@/enums/task.enum';
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface TaskDocument extends Document {

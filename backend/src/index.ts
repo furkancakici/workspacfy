@@ -1,14 +1,14 @@
 import 'dotenv/config';
-import { APP_CONFIG } from '@/config/app.config.ts';
+import { APP_CONFIG } from '@/config/app.config';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import session from 'cookie-session';
-import connectDatabase from '@/config/database.config.ts';
-import errorHandler from '@/middlewares/error-handler.middleware.ts';
-import { HTTP_STATUS } from './config/http.config.ts';
-import asyncHandler from './middlewares/async-handler.middleware.ts';
-import { BadRequestException } from './utils/app-error.ts';
-import { ErrorCodeEnum } from './enums/error-code.enum.ts';
+import connectDatabase from '@/config/database.config';
+import errorHandler from '@/middlewares/error-handler.middleware';
+import { HTTP_STATUS } from './config/http.config';
+import asyncHandler from './middlewares/async-handler.middleware';
+import { BadRequestException } from './utils/app-error';
+import { ErrorCodeEnum } from './enums/error-code.enum';
 import helmet from 'helmet';
 
 const app = express();

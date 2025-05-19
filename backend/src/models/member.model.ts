@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import { RolePermissionDocument } from '@/models/role-permission.model.ts';
+import { RolePermissionDocument } from '@/models/role-permission.model';
 
 export interface MemberDocument extends Document {
     workspaceId: mongoose.Types.ObjectId;

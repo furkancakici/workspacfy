@@ -1,7 +1,7 @@
-import connectDatabase from '@/config/database.config.ts';
-import { RoleType } from '@/enums/role.enum.ts';
-import RolePermissionModel from '@/models/role-permission.model.ts';
-import { RolePermission } from '@/utils/role-permission.ts';
+import connectDatabase from '@/config/database.config';
+import { RoleType } from '@/enums/role.enum';
+import RolePermissionModel from '@/models/role-permission.model';
+import { RolePermission } from '@/utils/role-permission';
 import mongoose from 'mongoose';
 
 const seedRoles = async () => {
