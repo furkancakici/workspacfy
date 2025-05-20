@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "target": "ES2021",
+        "target": "ES2016",
         "module": "NodeNext",
-        "rootDir": "./src",
         "moduleResolution": "NodeNext",
+        "rootDir": "./src",
         "baseUrl": "./src",
         "paths": {
-            "@/*": ["./*"]
+            "@/*": ["*"]
         },
         "outDir": "./dist",
         "esModuleInterop": true,

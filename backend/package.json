@@ -4,7 +4,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "tsx watch src/index.ts",
-        "build": "tsc",
+        "build": "tsc && tsc-alias",
         "start": "node dist/index.js",
         "format": "prettier --write ./src",
         "seed:role": "tsx src/seeders/role.seeder.ts"
@@ -24,6 +24,7 @@
         "passport": "^0.5.3",
         "passport-google-oauth20": "^2.0.0",
         "passport-local": "^1.0.0",
+        "tsc-alias": "^1.8.16",
         "uuid": "^11.1.0",
         "zod": "^3.24.2"
     },
