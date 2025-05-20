@@ -12,7 +12,6 @@ import { ErrorCodeEnum } from './enums/error-code.enum';
 import helmet from 'helmet';
 
 const app = express();
-const BASE_PATH = APP_CONFIG.BASE_PATH;
 
 app.use(helmet());
 app.use(
@@ -54,6 +53,6 @@ app.get(
 app.use(errorHandler);
 
 app.listen(APP_CONFIG.PORT, async () => {
-    console.log(`✅ Server is running on http://localhost:${APP_CONFIG.PORT}${BASE_PATH}`);
+    console.log(`✅ Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
     await connectDatabase();
 });

@@ -1,5 +1,5 @@
 import { compareValue, hashValue } from '@/utils/bcrypt';
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 export interface UserDocument extends Document {
     name: string;
@@ -10,7 +10,7 @@ export interface UserDocument extends Document {
     lastLogin: Date | null;
     createdAt: Date;
     updatedAt: Date;
-    currentWorkspace: mongoose.Types.ObjectId;
+    currentWorkspace: Types.ObjectId;
     comparePassword(value: string): Promise<boolean>;
 }
 
@@ -23,7 +23,7 @@ const userSchema = new Schema<UserDocument>(
         isActive: { type: Boolean, default: true },
         lastLogin: { type: Date, default: null },
 
-        currentWorkspace: { type: mongoose.Schema.Types.ObjectId, ref: 'Workspace' },
+        currentWorkspace: { type: Schema.Types.ObjectId, ref: 'Workspace' },
     },
     { timestamps: true }
 );
