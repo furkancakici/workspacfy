@@ -10,12 +10,10 @@ import connectDatabase from '@/config/database.config';
 
 import errorHandler from '@/middlewares/error-handler.middleware';
 
-import { HTTP_STATUS } from './config/http.config';
-import { ErrorCodeEnum } from './enums/error-code.enum';
-import asyncHandler from './middlewares/async-handler.middleware';
-import { BadRequestException, NotFoundException } from './utils/app-error';
+import apiRoutes from '@/routes';
 
 const app = express();
+const BASE_PATH = APP_CONFIG.BASE_PATH;
 
 app.use(helmet());
 app.use(
@@ -38,25 +36,7 @@ app.use(
     })
 );
 
-app.get(
-    '/api',
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        throw new BadRequestException('This is a bad request', ErrorCodeEnum.VALIDATION_ERROR);
-    })
-);
-
-app.get(
-    '/api/hello',
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        return res.status(HTTP_STATUS.OK).json({
-            message: 'Hello World',
-        });
-    })
-);
-
-app.use('*', (req: Request, res: Response, next: NextFunction) => {
-    next(new NotFoundException('Route not found', ErrorCodeEnum.RESOURCE_NOT_FOUND));
-});
+app.use(APP_CONFIG.BASE_PATH, apiRoutes);
 
 app.use(errorHandler);
 
