@@ -29,10 +29,8 @@ app.use(
         credentials: true,
     })
 );
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
     session({
         name: 'session',
@@ -43,9 +41,7 @@ app.use(
         sameSite: 'lax',
     })
 );
-
 app.use(APP_CONFIG.BASE_PATH, apiRoutes);
-
 app.use(errorHandler);
 
 app.listen(APP_CONFIG.PORT, async () => {
