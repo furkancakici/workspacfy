@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
+
 import { RolePermissionDocument } from '@/models/role-permission.model';
 
 export interface MemberDocument extends Document {

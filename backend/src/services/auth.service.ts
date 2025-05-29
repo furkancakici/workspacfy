@@ -1,11 +1,14 @@
-import { Roles } from '@/enums/role.enum';
+import mongoose, { Types } from 'mongoose';
+
 import AccountModel from '@/models/account.model';
 import MemberModel from '@/models/member.model';
 import RolePermissionModel from '@/models/role-permission.model';
 import UserModel from '@/models/user.model';
 import WorkspaceModel from '@/models/workspace.model';
+
+import { Roles } from '@/enums/role.enum';
+
 import { NotFoundException } from '@/utils/app-error';
-import mongoose, { Types } from 'mongoose';
 
 type LoginOrCreateAccountServiceData = {
     provider: string;

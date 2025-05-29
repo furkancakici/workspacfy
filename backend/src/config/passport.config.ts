@@ -1,10 +1,14 @@
-import passport from 'passport';
 import { Request } from 'express';
+import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+
 import { APP_CONFIG } from '@/config/app.config';
-import { NotFoundException } from '@/utils/app-error';
+
 import { ProviderEnum } from '@/enums/account-provider.enum';
+
 import { loginOrCreateAccountService } from '@/services/auth.service';
+
+import { NotFoundException } from '@/utils/app-error';
 
 passport.use(
     new GoogleStrategy(

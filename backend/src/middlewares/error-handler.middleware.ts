@@ -1,5 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+
 import { HTTP_STATUS } from '@/config/http.config';
+
 import { AppError } from '@/utils/app-error';
 
 const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction): any => {

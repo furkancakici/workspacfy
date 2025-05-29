@@ -1,15 +1,19 @@
 import 'dotenv/config';
-import { APP_CONFIG } from '@/config/app.config';
-import express, { NextFunction, Request, Response } from 'express';
-import cors from 'cors';
+
 import session from 'cookie-session';
-import connectDatabase from '@/config/database.config';
-import errorHandler from '@/middlewares/error-handler.middleware';
-import { HTTP_STATUS } from './config/http.config';
-import asyncHandler from './middlewares/async-handler.middleware';
-import { BadRequestException } from './utils/app-error';
-import { ErrorCodeEnum } from './enums/error-code.enum';
+import cors from 'cors';
+import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
+
+import { APP_CONFIG } from '@/config/app.config';
+import connectDatabase from '@/config/database.config';
+
+import errorHandler from '@/middlewares/error-handler.middleware';
+
+import { HTTP_STATUS } from './config/http.config';
+import { ErrorCodeEnum } from './enums/error-code.enum';
+import asyncHandler from './middlewares/async-handler.middleware';
+import { BadRequestException, NotFoundException } from './utils/app-error';
 
 const app = express();
 
@@ -49,6 +53,10 @@ app.get(
         });
     })
 );
+
+app.use('*', (req: Request, res: Response, next: NextFunction) => {
+    next(new NotFoundException('Route not found', ErrorCodeEnum.RESOURCE_NOT_FOUND));
+});
 
 app.use(errorHandler);
 

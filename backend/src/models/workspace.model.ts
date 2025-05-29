@@ -1,5 +1,6 @@
-import { generateInviteCode } from '@/utils/uuid';
 import mongoose, { Document, Schema, Types } from 'mongoose';
+
+import { generateInviteCode } from '@/utils/uuid';
 
 export interface WorkspaceDocument extends Document {
     name: string;

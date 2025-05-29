@@ -1,5 +1,6 @@
-import { ProviderEnum, ProviderEnumType } from '@/enums/account-provider.enum';
 import mongoose, { Document, Schema, Types } from 'mongoose';
+
+import { ProviderEnum, ProviderEnumType } from '@/enums/account-provider.enum';
 
 export interface AccountDocument extends Document {
     provider: ProviderEnumType;

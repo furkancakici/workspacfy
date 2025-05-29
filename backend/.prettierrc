@@ -8,5 +8,27 @@
     "arrowParens": "always",
     "bracketSpacing": true,
     "jsxSingleQuote": false,
-    "endOfLine": "lf"
+    "endOfLine": "lf",
+
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": [
+        "^(dotenv)(.*)$",
+        "<THIRD_PARTY_MODULES>",
+        "^@/config/(.*)$",
+        "^@/models/(.*)$",
+        "^@/enums/(.*)$",
+        "^@/services/(.*)$",
+        "^@/controllers/(.*)$",
+        "^@/middlewares/(.*)$",
+        "^@/routes/(.*)$",
+        "^@/validation/(.*)$",
+        "^@/utils/(.*)$",
+        "^@/seeders/(.*)$",
+        "^@/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrderGroupNamespaceSpecifiers": true,
+    "importOrderCaseInsensitive": true
 }
