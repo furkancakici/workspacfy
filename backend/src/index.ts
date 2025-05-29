@@ -13,7 +13,6 @@ import errorHandler from '@/middlewares/error-handler.middleware';
 import apiRoutes from '@/routes';
 
 const app = express();
-const BASE_PATH = APP_CONFIG.BASE_PATH;
 
 app.use(helmet());
 app.use(
