@@ -9,7 +9,6 @@
     "bracketSpacing": true,
     "jsxSingleQuote": false,
     "endOfLine": "lf",
-
     "plugins": ["@trivago/prettier-plugin-sort-imports"],
     "importOrder": [
         "^(dotenv)(.*)$",
