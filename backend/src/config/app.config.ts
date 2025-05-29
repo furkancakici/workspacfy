@@ -4,7 +4,7 @@ const appConfig = () => ({
     NODE_ENV: getEnv('NODE_ENV', 'development'),
     PORT: getEnv('PORT', '5001'),
     BASE_PATH: getEnv('BASE_PATH', '/api'),
-    MONGO_URI: getEnv('MONGO_URI', 'mongodb+srv://furkancakici25:_10203000__@workspace.4edvq.mongodb.net/?retryWrites=true&w=majority&appName=workspace'),
+    MONGO_URI: getEnv('MONGO_URI', ''),
 
     SESSION_SECRET: getEnv('SESSION_SECRET', 'your_secure_session_secret_key_here'),
     SESSION_EXPIRES_IN: getEnv('SESSION_EXPIRES_IN', '1d'),
