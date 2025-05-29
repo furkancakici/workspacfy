@@ -1,15 +1,11 @@
 import { Router } from 'express';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { HTTP_STATUS } from '@/config/http.config';
-
-import { ErrorCodeEnum } from '@/enums/error-code.enum';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
 import authRoutes from '@/routes/auth.route';
-
-import { NotFoundException } from '@/utils/app-error';
 
 const routes = Router();
 
