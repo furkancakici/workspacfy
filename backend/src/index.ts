@@ -2,7 +2,8 @@ import 'dotenv/config';
 
 import session from 'cookie-session';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 
 import { APP_CONFIG } from '@/config/app.config';
@@ -16,11 +17,19 @@ const app = express();
 
 app.use(helmet());
 app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        limit: APP_CONFIG.NODE_ENV === 'production' ? 100 : 1000,
+        message: 'Rate limit exceeded.',
+    })
+);
+app.use(
     cors({
         origin: APP_CONFIG.FRONTEND_ORIGIN,
         credentials: true,
     })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
