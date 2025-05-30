@@ -4,6 +4,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 import { APP_CONFIG } from '@/config/app.config';
 
+import UserModel from '@/models/user.model';
+
 import { ProviderEnum } from '@/enums/account-provider.enum';
 
 import { loginOrCreateAccountService } from '@/services/auth.service';
@@ -16,13 +18,14 @@ passport.use(
             clientID: APP_CONFIG.GOOGLE_CLIENT_ID,
             clientSecret: APP_CONFIG.GOOGLE_CLIENT_SECRET,
             callbackURL: APP_CONFIG.GOOGLE_CALLBACK_URL,
-            scope: ['email', 'profile'],
+            scope: ['profile', 'email'],
             passReqToCallback: true,
         },
         async (req: Request, accessToken, refreshToken, profile, done) => {
             try {
                 const { email, sub: googleId, picture } = profile._json;
-
+                console.log('profile', profile);
+                console.log('googleId', googleId);
                 if (!googleId) {
                     throw new NotFoundException('Google ID (sub) is missing');
                 }
@@ -40,3 +43,18 @@ passport.use(
         }
     )
 );
+
+// Bu kısımları ekleyin
+passport.serializeUser((user: any, done) => {
+    done(null, user._id);
+});
+
+passport.deserializeUser(async (id: string, done) => {
+    try {
+        // User model'inizi import etmeniz gerekebilir
+        const user = await UserModel.findById(id);
+        done(null, user);
+    } catch (error) {
+        done(error, null);
+    }
+});

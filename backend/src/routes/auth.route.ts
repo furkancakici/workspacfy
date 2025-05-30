@@ -3,14 +3,13 @@ import passport from 'passport';
 
 import { APP_CONFIG } from '@/config/app.config';
 
+import { googleLoginCallback } from '@/controllers/auth.controller';
+
 const failedUrl = `${APP_CONFIG.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`;
 
-const authRoutes = Router();
+const authRouter = Router();
 
-authRoutes.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+authRouter.get('/google-callback', passport.authenticate('google', { failureRedirect: failedUrl }), googleLoginCallback);
 
-authRoutes.get('/google-callback', passport.authenticate('google', { failureRedirect: failedUrl }), (req, res) => {
-    res.redirect('/');
-});
-
-export default authRoutes;
+export default authRouter;

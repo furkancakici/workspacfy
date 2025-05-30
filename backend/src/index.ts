@@ -5,6 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import passport from 'passport';
 
 import { APP_CONFIG } from '@/config/app.config';
 import connectDatabase from '@/config/database.config';
@@ -41,6 +42,8 @@ app.use(
         sameSite: 'lax',
     })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(APP_CONFIG.BASE_PATH, apiRoutes);
 app.use(errorHandler);
 

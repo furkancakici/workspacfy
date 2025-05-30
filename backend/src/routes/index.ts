@@ -5,11 +5,11 @@ import { HTTP_STATUS } from '@/config/http.config';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
-import authRoutes from '@/routes/auth.route';
+import authRouter from '@/routes/auth.route';
 
-const routes = Router();
+const router = Router();
 
-routes.get(
+router.get(
     '/',
     asyncHandler(async (req: Request, res: Response) => {
         res.status(HTTP_STATUS.OK).json({
@@ -20,6 +20,6 @@ routes.get(
     })
 );
 
-routes.use('/auth', authRoutes);
+router.use('/auth', authRouter);
 
-export default routes;
+export default router;
