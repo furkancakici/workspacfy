@@ -9,12 +9,11 @@ import passport from 'passport';
 
 import { APP_CONFIG } from '@/config/app.config';
 import connectDatabase from '@/config/database.config';
+import '@/config/passport.config';
 
 import errorHandler from '@/middlewares/error-handler.middleware';
 
 import apiRoutes from '@/routes';
-
-import './config/passport.config';
 
 const app = express();
 
