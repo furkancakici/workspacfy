@@ -14,6 +14,8 @@ import errorHandler from '@/middlewares/error-handler.middleware';
 
 import apiRoutes from '@/routes';
 
+import './config/passport.config';
+
 const app = express();
 
 app.use(helmet());

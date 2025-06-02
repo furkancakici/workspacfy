@@ -65,6 +65,8 @@ export const loginOrCreateAccountService = async (data: LoginOrCreateAccountServ
 
             user.currentWorkspace = workspace._id as Types.ObjectId;
             await user.save({ session });
+
+            return user;
         }
 
         await session.commitTransaction();
@@ -74,6 +76,4 @@ export const loginOrCreateAccountService = async (data: LoginOrCreateAccountServ
     } finally {
         session.endSession();
     }
-
-    return { user: true };
 };

@@ -25,11 +25,10 @@ passport.use(
             try {
                 const { email, sub: googleId, picture } = profile._json;
                 console.log('profile', profile);
-                console.log('googleId', googleId);
                 if (!googleId) {
                     throw new NotFoundException('Google ID (sub) is missing');
                 }
-                const { user } = await loginOrCreateAccountService({
+                const user = await loginOrCreateAccountService({
                     provider: ProviderEnum.GOOGLE,
                     displayName: profile.displayName,
                     providerId: googleId,
