@@ -29,21 +29,21 @@ export const loginOrCreateAccountService = async (data: LoginOrCreateAccountServ
         let user = await UserModel.findOne({ email }).session(session);
 
         if (!user) {
-            user = await UserModel.create({
+            user = new UserModel({
                 email,
                 name: displayName,
                 profilePicture: picture || null,
             });
             await user.save({ session });
 
-            const account = await AccountModel.create({
+            const account = new AccountModel({
                 provider,
                 providerId,
                 userId: user._id,
             });
             await account.save({ session });
 
-            const workspace = await WorkspaceModel.create({
+            const workspace = new WorkspaceModel({
                 name: 'My Workspace',
                 description: `Workspace created by ${user.name}`,
                 owner: user._id,
@@ -56,7 +56,7 @@ export const loginOrCreateAccountService = async (data: LoginOrCreateAccountServ
                 throw new NotFoundException('Owner role not found');
             }
 
-            const member = await MemberModel.create({
+            const member = new MemberModel({
                 workspaceId: workspace._id,
                 userId: user._id,
                 role: ownerRole._id,
@@ -65,11 +65,11 @@ export const loginOrCreateAccountService = async (data: LoginOrCreateAccountServ
 
             user.currentWorkspace = workspace._id as Types.ObjectId;
             await user.save({ session });
-
-            return user;
         }
 
         await session.commitTransaction();
+
+        return user;
     } catch (error) {
         await session.abortTransaction();
         throw error;
