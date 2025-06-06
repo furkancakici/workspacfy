@@ -1,0 +1,15 @@
+import { z } from 'zod';
+
+export const emailSchema = z.string().trim().email('Invalid email address').min(1).max(255);
+export const passwordSchema = z.string().trim().min(4);
+
+export const registerSchema = z.object({
+    name: z.string().trim().min(5).max(255),
+    email: emailSchema,
+    password: passwordSchema,
+});
+
+export const loginUserSchema = z.object({
+    email: emailSchema,
+    password: passwordSchema,
+});

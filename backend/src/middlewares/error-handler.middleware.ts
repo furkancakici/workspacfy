@@ -1,4 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
 
 import { HTTP_STATUS } from '@/config/http.config';
 
@@ -10,6 +11,13 @@ const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Respon
     if (err instanceof SyntaxError) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
             message: 'Invalid JSON Format, Please check your request body',
+        });
+    }
+
+    if (err instanceof ZodError) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+            message: 'Validation Error',
+            errors: err.flatten().fieldErrors,
         });
     }
 
