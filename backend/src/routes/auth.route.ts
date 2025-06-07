@@ -11,6 +11,7 @@ const authRouter = Router();
 
 authRouter.post('/register', authController.register);
 authRouter.post('/login', authController.login);
+authRouter.post('/logout', authController.logout);
 authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 authRouter.get('/google-callback', passport.authenticate('google', { failureRedirect: failedUrl }), authController.googleLoginCallback);
 

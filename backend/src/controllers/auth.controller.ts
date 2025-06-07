@@ -31,8 +31,8 @@ class AuthController {
         });
     });
 
-    public login = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        passport.authenticate('local', (err: Error | null, user: Express.User, info: { message: string } | undefined) => {
+    public login = (req: Request, res: Response, next: NextFunction) => {
+        passport.authenticate('local', (err: Error | null, user: Express.User | undefined, info: { message: string } | undefined) => {
             if (err) {
                 return next(err);
             }
@@ -46,9 +46,21 @@ class AuthController {
                     return next(err);
                 }
 
-                return res.status(HTTP_STATUS.OK).json({ message: 'Logged in successfully' });
+                console.log('user logged in');
+                return res.status(HTTP_STATUS.OK).json({ message: 'Logged in successfully', user });
             });
+        })(req, res, next);
+    };
+
+    public logout = asyncHandler(async (req: Request, res: Response) => {
+        req.logOut((err) => {
+            if (err) {
+                return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Failed to logout' });
+            }
         });
+
+        req.session = null;
+        res.status(HTTP_STATUS.OK).json({ message: 'Logged out successfully' });
     });
 }
 

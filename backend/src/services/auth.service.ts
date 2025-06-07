@@ -145,7 +145,7 @@ export const verifyUserService = async ({ email, password, provider = ProviderEn
         throw new NotFoundException('Account not found');
     }
 
-    const user = await UserModel.findById(account.userId);
+    const user = await UserModel.findById(account.userId).select('+password');
 
     if (!user) {
         throw new NotFoundException('User not found for the given account');
