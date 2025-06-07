@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as LocalStrategy } from 'passport-local';
 
 import { APP_CONFIG } from '@/config/app.config';
 
@@ -8,7 +9,7 @@ import UserModel from '@/models/user.model';
 
 import { ProviderEnum } from '@/enums/account-provider.enum';
 
-import { loginOrCreateAccountService } from '@/services/auth.service';
+import { loginOrCreateAccountService, verifyUserService } from '@/services/auth.service';
 
 import { NotFoundException } from '@/utils/app-error';
 
@@ -43,14 +44,30 @@ passport.use(
     )
 );
 
-// Bu kısımları ekleyin
+passport.use(
+    new LocalStrategy(
+        {
+            usernameField: 'email',
+            passwordField: 'password',
+            session: true,
+        },
+        async (email, password, done) => {
+            try {
+                const user = await verifyUserService({ email, password });
+                return done(null, user);
+            } catch (error) {
+                return done(error, false, { message: 'Invalid email or password' });
+            }
+        }
+    )
+);
+
 passport.serializeUser((user: any, done) => {
     done(null, user._id);
 });
 
 passport.deserializeUser(async (id: string, done) => {
     try {
-        // User model'inizi import etmeniz gerekebilir
         const user = await UserModel.findById(id);
         done(null, user);
     } catch (error) {

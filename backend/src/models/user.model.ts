@@ -13,6 +13,7 @@ export interface UserDocument extends Document {
     updatedAt: Date;
     currentWorkspace: Types.ObjectId;
     comparePassword(value: string): Promise<boolean>;
+    omitPassword(): Omit<UserDocument, 'password'>;
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -37,6 +38,12 @@ userSchema.pre('save', async function (next) {
     }
     next();
 });
+
+userSchema.methods.omitPassword = function (): Omit<UserDocument, 'password'> {
+    const userObject = this.toObject();
+    delete userObject.password;
+    return userObject;
+};
 
 userSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
     return compareValue(password, this.password);

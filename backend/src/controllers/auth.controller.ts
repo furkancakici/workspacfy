@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import passport from 'passport';
 
 import { APP_CONFIG } from '@/config/app.config';
 import { HTTP_STATUS } from '@/config/http.config';
@@ -26,5 +27,25 @@ export const registerUserController = asyncHandler(async (req: Request, res: Res
 
     res.status(HTTP_STATUS.CREATED).json({
         message: 'User registered successfully',
+    });
+});
+
+export const loginUserController = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate('local', (err: Error | null, user: Express.User, info: { message: string } | undefined) => {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) {
+            return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: info?.message || 'Invalid email or password' });
+        }
+
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+
+            return res.status(HTTP_STATUS.OK).json({ message: 'Logged in successfully' });
+        });
     });
 });
