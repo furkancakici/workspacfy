@@ -10,42 +10,46 @@ import asyncHandler from '@/middlewares/async-handler.middleware';
 
 import { registerSchema } from '@/validation/auth.validation';
 
-export const googleLoginCallback = asyncHandler(async (req: Request, res: Response) => {
-    const currentWorkspace = req.user?.currentWorkspace;
+class AuthController {
+    public googleLoginCallback = asyncHandler(async (req: Request, res: Response) => {
+        const currentWorkspace = req.user?.currentWorkspace;
 
-    if (!currentWorkspace) {
-        return res.redirect(`${APP_CONFIG.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`);
-    }
+        if (!currentWorkspace) {
+            return res.redirect(`${APP_CONFIG.FRONTEND_GOOGLE_CALLBACK_URL}?status=failure`);
+        }
 
-    return res.redirect(`${APP_CONFIG.FRONTEND_ORIGIN}/workspace/${currentWorkspace}`);
-});
-
-export const registerUserController = asyncHandler(async (req: Request, res: Response) => {
-    const body = registerSchema.parse(req.body);
-
-    await registerUserService(body);
-
-    res.status(HTTP_STATUS.CREATED).json({
-        message: 'User registered successfully',
+        return res.redirect(`${APP_CONFIG.FRONTEND_ORIGIN}/workspace/${currentWorkspace}`);
     });
-});
 
-export const loginUserController = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    passport.authenticate('local', (err: Error | null, user: Express.User, info: { message: string } | undefined) => {
-        if (err) {
-            return next(err);
-        }
+    public register = asyncHandler(async (req: Request, res: Response) => {
+        const body = registerSchema.parse(req.body);
 
-        if (!user) {
-            return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: info?.message || 'Invalid email or password' });
-        }
+        await registerUserService(body);
 
-        req.logIn(user, (err) => {
+        res.status(HTTP_STATUS.CREATED).json({
+            message: 'User registered successfully',
+        });
+    });
+
+    public login = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        passport.authenticate('local', (err: Error | null, user: Express.User, info: { message: string } | undefined) => {
             if (err) {
                 return next(err);
             }
 
-            return res.status(HTTP_STATUS.OK).json({ message: 'Logged in successfully' });
+            if (!user) {
+                return res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: info?.message || 'Invalid email or password' });
+            }
+
+            req.logIn(user, (err) => {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(HTTP_STATUS.OK).json({ message: 'Logged in successfully' });
+            });
         });
     });
-});
+}
+
+export const authController = new AuthController();
