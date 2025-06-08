@@ -46,7 +46,6 @@ class AuthController {
                     return next(err);
                 }
 
-                console.log('user logged in');
                 return res.status(HTTP_STATUS.OK).json({ message: 'Logged in successfully', user });
             });
         })(req, res, next);
