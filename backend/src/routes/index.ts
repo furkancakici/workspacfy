@@ -7,6 +7,8 @@ import asyncHandler from '@/middlewares/async-handler.middleware';
 
 import authRouter from '@/routes/auth.route';
 
+import userRouter from './user.route';
+
 const router = Router();
 
 router.get(
@@ -21,5 +23,6 @@ router.get(
 );
 
 router.use('/auth', authRouter);
+router.use('/user', userRouter);
 
 export default router;

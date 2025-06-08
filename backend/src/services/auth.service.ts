@@ -6,7 +6,7 @@ import RolePermissionModel from '@/models/role-permission.model';
 import UserModel from '@/models/user.model';
 import WorkspaceModel from '@/models/workspace.model';
 
-import { ProviderEnum, ProviderEnumType } from '@/enums/account-provider.enum';
+import { ProviderEnum } from '@/enums/account-provider.enum';
 import { Roles } from '@/enums/role.enum';
 
 import { BadRequestException, NotFoundException, UnauthorizedException } from '@/utils/app-error';
