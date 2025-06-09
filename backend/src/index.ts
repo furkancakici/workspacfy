@@ -6,6 +6,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import passport from 'passport';
+import pinoHttp from 'pino-http';
 
 import { APP_CONFIG } from '@/config/app.config';
 import connectDatabase from '@/config/database.config';
@@ -13,10 +14,13 @@ import '@/config/passport.config';
 
 import errorHandler from '@/middlewares/error-handler.middleware';
 
+import logger from '@/utils/logger';
+
 import apiRoutes from '@/routes';
 
 const app = express();
 
+app.use(pinoHttp({ logger }));
 app.use(helmet());
 app.use(
     rateLimit({

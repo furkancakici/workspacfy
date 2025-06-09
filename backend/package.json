@@ -25,6 +25,8 @@
         "passport": "^0.5.3",
         "passport-google-oauth20": "^2.0.0",
         "passport-local": "^1.0.0",
+        "pino": "^9.7.0",
+        "pino-http": "^10.5.0",
         "tsc-alias": "^1.8.16",
         "uuid": "^11.1.0",
         "zod": "^3.24.2"
@@ -41,6 +43,7 @@
         "@types/passport": "^1.0.17",
         "@types/passport-google-oauth20": "^2.0.16",
         "@types/passport-local": "^1.0.38",
+        "pino-pretty": "^13.0.0",
         "prettier": "^3.5.3",
         "tsx": "^4.19.3",
         "typescript": "^5.7.3"
