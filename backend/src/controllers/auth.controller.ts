@@ -52,7 +52,7 @@ class AuthController {
     };
 
     public logout = asyncHandler(async (req: Request, res: Response) => {
-        req.logOut((err) => {
+        req.logout((err) => {
             if (err) {
                 return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: 'Failed to logout' });
             }
