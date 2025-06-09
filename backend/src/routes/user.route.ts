@@ -2,10 +2,10 @@ import { Router } from 'express';
 
 import { userController } from '@/controllers/user.controller';
 
-import authanticatedCheck from '@/middlewares/authanticated-check.middleware';
+import authenticateCheck from '@/middlewares/authenticate-check.middleware';
 
 const userRouter = Router();
 
-userRouter.get('/current', authanticatedCheck, userController.getCurrentUser);
+userRouter.get('/current', authenticateCheck, userController.getCurrentUser);
 
 export default userRouter;
