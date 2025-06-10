@@ -6,8 +6,8 @@ import { HTTP_STATUS } from '@/config/http.config';
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
 import authRouter from '@/routes/auth.route';
-
-import userRouter from './user.route';
+import userRouter from '@/routes/user.route';
+import workspaceRouter from '@/routes/workspace.route';
 
 const router = Router();
 
@@ -24,5 +24,6 @@ router.get(
 
 router.use('/auth', authRouter);
 router.use('/user', userRouter);
+router.use('/workspace', workspaceRouter);
 
 export default router;
