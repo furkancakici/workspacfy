@@ -53,6 +53,6 @@ app.use(APP_CONFIG.BASE_PATH, apiRoutes);
 app.use(errorHandler);
 
 app.listen(APP_CONFIG.PORT, async () => {
-    console.log(`✅ Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
+    console.log(`🚀 Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
     await connectDatabase();
 });
