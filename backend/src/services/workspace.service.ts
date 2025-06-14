@@ -56,3 +56,11 @@ export const createNewWorkspaceService = async (userId: string, body: z.infer<ty
         session.endSession();
     }
 };
+
+export const getAllWorkspacesService = async (userId: string) => {
+    const memberships = await MemberModel.find({ userId }).populate('workspaceId').select('-password').exec();
+
+    const workspaces = memberships.map((membership) => membership.workspaceId);
+
+    return workspaces;
+};
