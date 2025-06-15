@@ -13,7 +13,7 @@ import { createWorkspaceSchema } from '@/validation/workspace.validation';
 
 import { NotFoundException } from '@/utils/app-error';
 
-export const createNewWorkspaceService = async (userId: string, body: z.infer<typeof createWorkspaceSchema>) => {
+export const createNewWorkspace = async (userId: string, body: z.infer<typeof createWorkspaceSchema>) => {
     const { name, description } = body;
 
     const session = await mongoose.startSession();
@@ -57,10 +57,35 @@ export const createNewWorkspaceService = async (userId: string, body: z.infer<ty
     }
 };
 
-export const getAllWorkspacesService = async (userId: string) => {
+export const getAllWorkspaces = async (userId: string) => {
     const memberships = await MemberModel.find({ userId }).populate('workspaceId').select('-password').exec();
 
     const workspaces = memberships.map((membership) => membership.workspaceId);
 
     return workspaces;
+};
+
+export const getWorkspaceById = async (userId: string, workspaceId: string) => {
+    const workspace = await WorkspaceModel.findById(workspaceId);
+
+    if (!workspace) {
+        throw new NotFoundException('Workspace not found');
+    }
+
+    const members = await MemberModel.find({ workspaceId }).populate('role');
+
+    const workspaceWithMembers = {
+        ...workspace.toObject(),
+        members,
+    };
+
+    return { workspace: workspaceWithMembers };
+};
+
+export const getWorkspaceMembers = async (workspaceId: string) => {
+    const members = await MemberModel.find({ workspaceId }).populate('userId', 'name email profilePicture').populate('role', 'name');
+
+    const roles = await RolePermissionModel.find({}, { name: 1, _id: 1 }).select('-permission').lean();
+
+    return { members, roles };
 };
