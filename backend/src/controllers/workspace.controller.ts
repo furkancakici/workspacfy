@@ -5,11 +5,11 @@ import { HTTP_STATUS } from '@/config/http.config';
 import { Permissions } from '@/enums/role.enum';
 
 import { getMemberRoleInWorkspace } from '@/services/member.service';
-import { createNewWorkspace, getAllWorkspaces, getWorkspaceById, getWorkspaceMembers } from '@/services/workspace.service';
+import { changeMemberRole, createNewWorkspace, getAllWorkspaces, getWorkspaceAnalytics, getWorkspaceById, getWorkspaceMembers } from '@/services/workspace.service';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
-import { createWorkspaceSchema, workspaceIdSchema } from '@/validation/workspace.validation';
+import { changeRoleSchema, createWorkspaceSchema, workspaceIdSchema } from '@/validation/workspace.validation';
 
 import { roleGuard } from '@/utils/role-guard';
 
@@ -52,6 +52,32 @@ class WorkspaceController {
         const { members, roles } = await getWorkspaceMembers(workspaceId);
 
         res.status(HTTP_STATUS.OK).json({ message: 'Workspace members fetched successfully', members, roles });
+    });
+
+    public getWorkspaceAnalytics = asyncHandler(async (req: Request, res: Response) => {
+        const workspaceId = workspaceIdSchema.parse(req.params.id);
+        const userId = req.user?._id;
+
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+
+        roleGuard(role, [Permissions.VIEW_ONLY]);
+
+        const { analytics } = await getWorkspaceAnalytics(workspaceId);
+
+        res.status(HTTP_STATUS.OK).json({ message: 'Workspace analytics fetched successfully', analytics });
+    });
+
+    public changeMemberRole = asyncHandler(async (req: Request, res: Response) => {
+        const { roleId, memberId } = changeRoleSchema.parse(req.body);
+        const workspaceId = workspaceIdSchema.parse(req.params.id);
+        const userId = req.user?._id;
+
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+        roleGuard(role, [Permissions.CHANGE_MEMBER_ROLE]);
+
+        const { member } = await changeMemberRole(workspaceId, memberId, roleId);
+
+        res.status(HTTP_STATUS.OK).json({ message: 'Member role changed successfully', member });
     });
 }
 

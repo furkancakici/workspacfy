@@ -4,10 +4,12 @@ import z from 'zod';
 
 import MemberModel from '@/models/member.model';
 import RolePermissionModel from '@/models/role-permission.model';
+import TaskModel from '@/models/task.model';
 import UserModel from '@/models/user.model';
 import WorkspaceModel from '@/models/workspace.model';
 
 import { Roles } from '@/enums/role.enum';
+import { TaskStatusEnum } from '@/enums/task.enum';
 
 import { createWorkspaceSchema } from '@/validation/workspace.validation';
 
@@ -88,4 +90,54 @@ export const getWorkspaceMembers = async (workspaceId: string) => {
     const roles = await RolePermissionModel.find({}, { name: 1, _id: 1 }).select('-permission').lean();
 
     return { members, roles };
+};
+
+export const getWorkspaceAnalytics = async (workspaceId: string) => {
+    const currentDate = new Date();
+
+    const totalTasks = await TaskModel.countDocuments({ workspace: workspaceId });
+
+    const overdueTasks = await TaskModel.countDocuments({
+        workspace: workspaceId,
+        dueDate: { $lt: currentDate },
+        status: { $ne: TaskStatusEnum.DONE },
+    });
+
+    const completedTasks = await TaskModel.countDocuments({
+        workspace: workspaceId,
+        status: TaskStatusEnum.DONE,
+    });
+
+    const analytics = {
+        totalTasks,
+        overdueTasks,
+        completedTasks,
+    };
+
+    return { analytics };
+};
+
+export const changeMemberRole = async (workspaceId: string, memberId: string, roleId: string) => {
+    const workspace = await WorkspaceModel.findById(workspaceId);
+
+    if (!workspace) {
+        throw new NotFoundException('Workspace not found');
+    }
+
+    const role = await RolePermissionModel.findById(roleId);
+
+    if (!role) {
+        throw new NotFoundException('Role not found');
+    }
+
+    const member = await MemberModel.findOne({ userId: memberId, workspaceId: workspaceId });
+
+    if (!member) {
+        throw new NotFoundException('Member not found in the workspace');
+    }
+
+    member.role = role;
+    await member.save();
+
+    return { member };
 };

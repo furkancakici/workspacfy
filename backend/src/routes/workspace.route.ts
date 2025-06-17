@@ -10,5 +10,7 @@ workspaceRouter.post('/create/new', authenticateCheck, workspaceController.creat
 workspaceRouter.get('/all', authenticateCheck, workspaceController.getAllWorkspaces);
 workspaceRouter.get('/:id', authenticateCheck, workspaceController.getWorkspaceById);
 workspaceRouter.get('/members/:id', authenticateCheck, workspaceController.getWorkspaceMembers);
+workspaceRouter.get('/analytics/:id', authenticateCheck, workspaceController.getWorkspaceAnalytics);
+workspaceRouter.put('/member-role/:id', authenticateCheck, workspaceController.changeMemberRole);
 
 export default workspaceRouter;
