@@ -4,8 +4,10 @@ import { Request, Response } from 'express';
 import { HTTP_STATUS } from '@/config/http.config';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
+import authenticateCheck from '@/middlewares/authenticate-check.middleware';
 
 import authRouter from '@/routes/auth.route';
+import memberRouter from '@/routes/member.route';
 import userRouter from '@/routes/user.route';
 import workspaceRouter from '@/routes/workspace.route';
 
@@ -23,7 +25,8 @@ router.get(
 );
 
 router.use('/auth', authRouter);
-router.use('/user', userRouter);
-router.use('/workspace', workspaceRouter);
+router.use('/user', authenticateCheck, userRouter);
+router.use('/workspace', authenticateCheck, workspaceRouter);
+router.use('/member', authenticateCheck, memberRouter);
 
 export default router;

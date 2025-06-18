@@ -6,11 +6,11 @@ import authenticateCheck from '@/middlewares/authenticate-check.middleware';
 
 const workspaceRouter = Router();
 
-workspaceRouter.post('/create/new', authenticateCheck, workspaceController.createNewWorkspace);
-workspaceRouter.get('/all', authenticateCheck, workspaceController.getAllWorkspaces);
-workspaceRouter.get('/:id', authenticateCheck, workspaceController.getWorkspaceById);
-workspaceRouter.get('/members/:id', authenticateCheck, workspaceController.getWorkspaceMembers);
-workspaceRouter.get('/analytics/:id', authenticateCheck, workspaceController.getWorkspaceAnalytics);
-workspaceRouter.put('/member-role/:id', authenticateCheck, workspaceController.changeMemberRole);
+workspaceRouter.post('/create/new', workspaceController.createNewWorkspace);
+workspaceRouter.get('/all', workspaceController.getAllWorkspaces);
+workspaceRouter.get('/:id', workspaceController.getWorkspaceById);
+workspaceRouter.get('/members/:id', workspaceController.getWorkspaceMembers);
+workspaceRouter.get('/analytics/:id', workspaceController.getWorkspaceAnalytics);
+workspaceRouter.put('/member-role/:id', workspaceController.changeMemberRole);
 
 export default workspaceRouter;
