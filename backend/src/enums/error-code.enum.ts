@@ -14,6 +14,7 @@ export const ErrorCodeEnum = {
     // Validation and Resource Errors
     VALIDATION_ERROR: 'VALIDATION_ERROR',
     RESOURCE_NOT_FOUND: 'RESOURCE_NOT_FOUND',
+    ROUTE_NOT_FOUND: 'ROUTE_NOT_FOUND',
 
     // System Errors
     INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',

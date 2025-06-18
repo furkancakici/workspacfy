@@ -43,3 +43,9 @@ export class UnauthorizedException extends AppError {
         super(message, HTTP_STATUS.UNAUTHORIZED, errorCode || ErrorCodeEnum.ACCESS_UNAUTHORIZED);
     }
 }
+
+export class NotFoundRouteException extends AppError {
+    constructor(message = 'Route not found', errorCode?: ErrorCodeEnumType) {
+        super(message, HTTP_STATUS.NOT_FOUND, errorCode || ErrorCodeEnum.ROUTE_NOT_FOUND);
+    }
+}

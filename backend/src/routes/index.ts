@@ -11,6 +11,8 @@ import memberRouter from '@/routes/member.route';
 import userRouter from '@/routes/user.route';
 import workspaceRouter from '@/routes/workspace.route';
 
+import { NotFoundRouteException } from '@/utils/app-error';
+
 const router = Router();
 
 router.get(
@@ -28,5 +30,9 @@ router.use('/auth', authRouter);
 router.use('/user', authenticateCheck, userRouter);
 router.use('/workspace', authenticateCheck, workspaceRouter);
 router.use('/member', authenticateCheck, memberRouter);
+
+router.use('*', (req: Request, res: Response) => {
+    throw new NotFoundRouteException();
+});
 
 export default router;

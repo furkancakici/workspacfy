@@ -4,6 +4,6 @@ import { memberController } from '@/controllers/member.controller';
 
 const memberRouter = Router();
 
-memberRouter.post('/join/:inviteCode', memberController.getJoinWorkspaceByInvite);
+memberRouter.post('/join-workspace', memberController.getJoinWorkspaceByInvite);
 
 export default memberRouter;

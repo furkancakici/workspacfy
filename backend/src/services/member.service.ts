@@ -1,9 +1,13 @@
+import z from 'zod';
+
 import MemberModel from '@/models/member.model';
 import RolePermissionModel from '@/models/role-permission.model';
 import WorkspaceModel from '@/models/workspace.model';
 
 import { ErrorCodeEnum } from '@/enums/error-code.enum';
 import { Roles } from '@/enums/role.enum';
+
+import { inviteCodeSchema } from '@/validation/member.validation';
 
 import { BadRequestException, NotFoundException, UnauthorizedException } from '@/utils/app-error';
 
@@ -25,7 +29,9 @@ export const getMemberRoleInWorkspace = async (userId: string, workspaceId: stri
     return { role: roleName };
 };
 
-export const getJoinWorkspaceByInvite = async (userId: string, inviteCode: string) => {
+export const getJoinWorkspaceByInvite = async (userId: string, body: z.infer<typeof inviteCodeSchema>) => {
+    const { inviteCode } = body;
+
     const workspace = await WorkspaceModel.findOne({ inviteCode });
 
     if (!workspace) {
