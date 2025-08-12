@@ -6,7 +6,6 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import passport from 'passport';
-import pinoHttp from 'pino-http';
 
 import { APP_CONFIG } from '@/config/app.config';
 import connectDatabase from '@/config/database.config';
@@ -14,13 +13,13 @@ import '@/config/passport.config';
 
 import errorHandler from '@/middlewares/error-handler.middleware';
 
-import logger from '@/utils/logger';
+import logger, { httpLogger } from '@/utils/logger';
 
 import apiRoutes from '@/routes';
 
 const app = express();
 
-app.use(pinoHttp({ logger }));
+app.use(httpLogger);
 app.use(helmet());
 app.use(
     rateLimit({
@@ -53,22 +52,22 @@ app.use(APP_CONFIG.BASE_PATH, apiRoutes);
 app.use(errorHandler);
 
 const server = app.listen(APP_CONFIG.PORT, async () => {
-    logger.warn(`🚀 Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
+    logger.info(`🚀 Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
     await connectDatabase();
 });
 
 process.on('SIGTERM', async () => {
-    logger.warn('SIGTERM received, shutting down gracefully');
+    logger.info('SIGTERM received, shutting down gracefully');
     server.close(() => {
-        logger.warn('Process terminated');
+        logger.info('Process terminated');
         process.exit(0);
     });
 });
 
 process.on('SIGINT', async () => {
-    logger.warn('SIGINT received, shutting down gracefully');
+    logger.info('SIGINT received, shutting down gracefully');
     server.close(() => {
-        logger.warn('Process terminated');
+        logger.info('Process terminated');
         process.exit(0);
     });
 });
