@@ -31,7 +31,7 @@ router.use('/user', authenticateCheck, userRouter);
 router.use('/workspace', authenticateCheck, workspaceRouter);
 router.use('/member', authenticateCheck, memberRouter);
 
-router.use('*', (req: Request, res: Response) => {
+router.use('*', () => {
     throw new NotFoundRouteException();
 });
 

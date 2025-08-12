@@ -11,7 +11,7 @@ export interface UserDocument extends Document {
     lastLogin: Date | null;
     createdAt: Date;
     updatedAt: Date;
-    currentWorkspace: Types.ObjectId;
+    currentWorkspace: Types.ObjectId | null;
     comparePassword(value: string): Promise<boolean>;
     omitPassword(): Omit<UserDocument, 'password'>;
 }
@@ -25,7 +25,7 @@ const userSchema = new Schema<UserDocument>(
         isActive: { type: Boolean, default: true },
         lastLogin: { type: Date, default: null },
 
-        currentWorkspace: { type: Schema.Types.ObjectId, ref: 'Workspace' },
+        currentWorkspace: { type: Schema.Types.ObjectId, ref: 'Workspace', default: null },
     },
     { timestamps: true }
 );
