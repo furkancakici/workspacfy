@@ -52,7 +52,23 @@ app.use(passport.session());
 app.use(APP_CONFIG.BASE_PATH, apiRoutes);
 app.use(errorHandler);
 
-app.listen(APP_CONFIG.PORT, async () => {
-    console.log(`🚀 Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
+const server = app.listen(APP_CONFIG.PORT, async () => {
+    logger.warn(`🚀 Server is running on http://localhost:${APP_CONFIG.PORT}${APP_CONFIG.BASE_PATH}`);
     await connectDatabase();
+});
+
+process.on('SIGTERM', async () => {
+    logger.warn('SIGTERM received, shutting down gracefully');
+    server.close(() => {
+        logger.warn('Process terminated');
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', async () => {
+    logger.warn('SIGINT received, shutting down gracefully');
+    server.close(() => {
+        logger.warn('Process terminated');
+        process.exit(0);
+    });
 });
