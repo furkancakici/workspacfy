@@ -8,6 +8,7 @@ import authenticateCheck from '@/middlewares/authenticate-check.middleware';
 
 import authRouter from '@/routes/auth.route';
 import memberRouter from '@/routes/member.route';
+import projectRouter from '@/routes/project.routes';
 import userRouter from '@/routes/user.route';
 import workspaceRouter from '@/routes/workspace.route';
 
@@ -30,6 +31,7 @@ router.use('/auth', authRouter);
 router.use('/user', authenticateCheck, userRouter);
 router.use('/workspace', authenticateCheck, workspaceRouter);
 router.use('/member', authenticateCheck, memberRouter);
+router.use('/project', authenticateCheck, projectRouter);
 
 router.use('*', () => {
     throw new NotFoundRouteException();
