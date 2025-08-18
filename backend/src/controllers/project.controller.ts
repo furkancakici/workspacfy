@@ -36,7 +36,7 @@ class ProjectController {
         const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
         roleGuard(role, [Permissions.VIEW_ONLY]);
 
-        const { projects, pagination } = await getAllProjects(userId, workspaceId, paginationQuery);
+        const { projects, pagination } = await getAllProjects(workspaceId, paginationQuery);
 
         res.status(HTTP_STATUS.OK).json({ message: 'Projects fetched successfully', projects, pagination });
     });

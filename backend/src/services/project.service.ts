@@ -19,7 +19,7 @@ export const createNewProject = async (userId: string, workspaceId: string, body
     return { project };
 };
 
-export const getAllProjects = async (userId: string, workspaceId: string, pagination: PaginationType) => {
+export const getAllProjects = async (workspaceId: string, pagination: PaginationType) => {
     const { page, pageSize } = pagination;
     const skip = (page - 1) * pageSize;
 
