@@ -109,3 +109,17 @@ export const updateProjectById = async (workspaceId: string, projectId: string, 
 
     return { project };
 };
+
+export const deleteProjectById = async (workspaceId: string, projectId: string) => {
+    const project = await ProjectModel.findOne({ _id: projectId, workspace: workspaceId });
+
+    if (!project || !project.workspace.equals(workspaceId)) {
+        throw new NotFoundException('Project not found or does not belong to the workspace');
+    }
+
+    await project.deleteOne();
+
+    await TaskModel.deleteMany({ project: project._id });
+
+    return { project };
+};

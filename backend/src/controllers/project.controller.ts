@@ -5,7 +5,7 @@ import { HTTP_STATUS } from '@/config/http.config';
 import { Permissions } from '@/enums/role.enum';
 
 import { getMemberRoleInWorkspace } from '@/services/member.service';
-import { createNewProject, getAllProjects, getProjectAnalytics, getSingleProject, updateProjectById } from '@/services/project.service';
+import { createNewProject, deleteProjectById, getAllProjects, getProjectAnalytics, getSingleProject, updateProjectById } from '@/services/project.service';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
@@ -79,6 +79,19 @@ class ProjectController {
         const { project } = await updateProjectById(workspaceId, projectId, body);
 
         res.status(HTTP_STATUS.OK).json({ message: 'Project updated successfully', project });
+    });
+
+    public deleteProjectById = asyncHandler(async (req: Request, res: Response) => {
+        const projectId = projectIdSchema.parse(req.params.projectId);
+        const workspaceId = workspaceIdSchema.parse(req.params.workspaceId);
+        const userId = req.user?._id;
+
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+        roleGuard(role, [Permissions.DELETE_PROJECT]);
+
+        await deleteProjectById(workspaceId, projectId);
+
+        res.status(HTTP_STATUS.OK).json({ message: 'Project deleted successfully' });
     });
 }
 
