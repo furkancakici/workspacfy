@@ -5,7 +5,7 @@ import { HTTP_STATUS } from '@/config/http.config';
 import { Permissions } from '@/enums/role.enum';
 
 import { getMemberRoleInWorkspace } from '@/services/member.service';
-import { createNewProject, getAllProjects, getSingleProject } from '@/services/project.service';
+import { createNewProject, getAllProjects, getProjectAnalytics, getSingleProject } from '@/services/project.service';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
@@ -52,6 +52,19 @@ class ProjectController {
         const { project } = await getSingleProject(workspaceId, projectId);
 
         res.status(HTTP_STATUS.OK).json({ message: 'Project fetched successfully', project });
+    });
+
+    public getProjectAnalytics = asyncHandler(async (req: Request, res: Response) => {
+        const projectId = projectIdSchema.parse(req.params.projectId);
+        const workspaceId = workspaceIdSchema.parse(req.params.workspaceId);
+        const userId = req.user?._id;
+
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+        roleGuard(role, [Permissions.VIEW_ONLY]);
+
+        const { analytics } = await getProjectAnalytics(workspaceId, projectId);
+
+        res.status(HTTP_STATUS.OK).json({ message: 'Project analytics fetched successfully', analytics });
     });
 }
 

@@ -68,7 +68,7 @@ export const getAllWorkspaces = async (userId: string) => {
     return workspaces;
 };
 
-export const getWorkspaceById = async (userId: string, workspaceId: string) => {
+export const getWorkspaceById = async (workspaceId: string) => {
     const workspace = await WorkspaceModel.findById(workspaceId);
 
     if (!workspace) {

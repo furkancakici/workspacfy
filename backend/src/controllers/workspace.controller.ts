@@ -43,9 +43,10 @@ class WorkspaceController {
         const workspaceId = workspaceIdSchema.parse(req.params.id);
         const userId = req.user?._id;
 
-        await getMemberRoleInWorkspace(userId, workspaceId);
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+        roleGuard(role, [Permissions.VIEW_ONLY]);
 
-        const { workspace } = await getWorkspaceById(userId, workspaceId);
+        const { workspace } = await getWorkspaceById(workspaceId);
 
         res.status(HTTP_STATUS.OK).json({ message: 'Workspace fetched successfully', workspace });
     });
