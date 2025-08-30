@@ -94,3 +94,18 @@ export const getProjectAnalytics = async (workspaceId: string, projectId: string
 
     return { analytics };
 };
+
+export const updateProjectById = async (workspaceId: string, projectId: string, body: ProjectType) => {
+    const project = await ProjectModel.findOne({ _id: projectId, workspace: workspaceId });
+
+    if (!project || !project.workspace.equals(workspaceId)) {
+        throw new NotFoundException('Project not found or does not belong to the workspace');
+    }
+
+    project.name = body.name || project.name;
+    project.description = body.description || project.description;
+    project.emoji = body.emoji || project.emoji;
+    await project.save();
+
+    return { project };
+};
