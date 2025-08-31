@@ -14,6 +14,8 @@ import workspaceRouter from '@/routes/workspace.route';
 
 import { NotFoundRouteException } from '@/utils/app-error';
 
+import taskRouter from './task.route';
+
 const router = Router();
 
 router.get(
@@ -32,6 +34,7 @@ router.use('/user', authenticateCheck, userRouter);
 router.use('/workspace', authenticateCheck, workspaceRouter);
 router.use('/member', authenticateCheck, memberRouter);
 router.use('/project', authenticateCheck, projectRouter);
+router.use('/task', authenticateCheck, taskRouter);
 
 router.use('*', () => {
     throw new NotFoundRouteException();

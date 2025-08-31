@@ -2,6 +2,8 @@ import mongoose, { Document, Schema, Types } from 'mongoose';
 
 import { TaskPriorityEnum, TaskPriorityEnumType, TaskStatusEnum, TaskStatusEnumType } from '@/enums/task.enum';
 
+import { generateTaskCode } from '@/utils/uuid';
+
 export interface TaskDocument extends Document {
     taskCode: string;
     title: string;
@@ -19,7 +21,7 @@ export interface TaskDocument extends Document {
 
 const taskSchema = new Schema<TaskDocument>(
     {
-        taskCode: { type: String, unique: true, required: true },
+        taskCode: { type: String, unique: true, default: generateTaskCode },
         title: { type: String, required: true, trim: true },
         description: { type: String, default: null, trim: true },
         project: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
