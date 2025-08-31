@@ -22,7 +22,18 @@ const dueDateSchema = z
         }
         return date;
     });
-const taskIdSchema = z.string().trim().min(1, { message: 'Task ID is required' });
+
+const statusArraySchema = z
+    .string()
+    .transform((val) => val.split(','))
+    .pipe(z.array(z.nativeEnum(TaskStatusEnum)));
+
+const priorityArraySchema = z
+    .string()
+    .transform((val) => val.split(','))
+    .pipe(z.array(z.nativeEnum(TaskPriorityEnum)));
+
+export const taskIdSchema = z.string().trim().min(1, { message: 'Task ID is required' });
 
 export const createTaskSchema = z.object({
     title: titleSchema,
@@ -42,5 +53,27 @@ export const updateTaskSchema = z.object({
     dueDate: dueDateSchema,
 });
 
+export const getTasksQuerySchema = z.object({
+    projectId: z.string().optional(),
+    status: statusArraySchema.optional(),
+    priority: priorityArraySchema.optional(),
+    assignedTo: z
+        .string()
+        .optional()
+        .transform((val) =>
+            val
+                ? val
+                      .split(',')
+                      .map((id) => id.trim())
+                      .filter((id) => id.length > 0)
+                : undefined
+        ),
+    keyword: z.string().trim().min(1).optional(),
+    dueDate: z.string().datetime().optional().or(z.string().date().optional()),
+    pageSize: z.coerce.number().int().min(1).max(100).default(10),
+    page: z.coerce.number().int().min(1).default(1),
+});
+
+export type GetTasksQueryType = z.infer<typeof getTasksQuerySchema>;
 export type CreateTaskType = z.infer<typeof createTaskSchema>;
 export type UpdateTaskType = z.infer<typeof updateTaskSchema>;
