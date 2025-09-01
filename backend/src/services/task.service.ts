@@ -3,6 +3,7 @@ import mongoose, { FilterQuery } from 'mongoose';
 import MemberModel from '@/models/member.model';
 import ProjectModel from '@/models/project.model';
 import TaskModel, { TaskDocument } from '@/models/task.model';
+import WorkspaceModel from '@/models/workspace.model';
 
 import { TaskPriorityEnum, TaskStatusEnum } from '@/enums/task.enum';
 
@@ -112,4 +113,44 @@ export const getAllTasks = async (workspaceId: string, query: GetTasksQueryType)
     const hasPrevPage = page > 1;
 
     return { tasks, pagination: { currentPage: page, pageSize, totalCount, totalPages, hasNextPage, hasPrevPage } };
+};
+
+export const getTaskById = async (taskId: string, workspaceId: string, projectId: string) => {
+    const workspace = await WorkspaceModel.findById(workspaceId);
+
+    if (!workspace) {
+        throw new NotFoundException('Workspace not found');
+    }
+
+    const project = await ProjectModel.findById(projectId);
+
+    if (!project || !project.workspace.equals(workspaceId)) {
+        throw new NotFoundException('Project not found or does not belong to the workspace');
+    }
+
+    const task = await TaskModel.findOne({ _id: taskId, workspace: workspaceId, project: projectId }).populate('assignedTo', '_id name profilePicture -password').lean();
+
+    if (!task) {
+        throw new NotFoundException('Task not found or does not belong to the workspace or project');
+    }
+
+    return { task };
+};
+
+export const deleteTaskById = async (taskId: string, workspaceId: string, projectId: string) => {
+    const project = await ProjectModel.findById(projectId);
+
+    if (!project || !project.workspace.equals(workspaceId)) {
+        throw new NotFoundException('Project not found or does not belong to the workspace');
+    }
+
+    const task = await TaskModel.findOne({ _id: taskId, workspace: workspaceId, project: projectId });
+
+    if (!task) {
+        throw new NotFoundException('Task not found or does not belong to the workspace or project');
+    }
+
+    await task.deleteOne();
+
+    return { task };
 };

@@ -6,7 +6,7 @@ import { Permissions } from '@/enums/role.enum';
 import { TaskPriorityEnumType, TaskStatusEnumType } from '@/enums/task.enum';
 
 import { getMemberRoleInWorkspace } from '@/services/member.service';
-import { createNewTask, getAllTasks, updateTaskById } from '@/services/task.service';
+import { createNewTask, deleteTaskById, getAllTasks, getTaskById, updateTaskById } from '@/services/task.service';
 
 import asyncHandler from '@/middlewares/async-handler.middleware';
 
@@ -57,6 +57,34 @@ class TaskController {
         const result = await getAllTasks(workspaceId, validatedQuery);
 
         res.status(HTTP_STATUS.OK).json({ message: 'Tasks fetched successfully', ...result });
+    });
+
+    public getTaskById = asyncHandler(async (req: Request, res: Response) => {
+        const userId = req.user?._id;
+        const taskId = taskIdSchema.parse(req.params.id);
+        const projectId = projectIdSchema.parse(req.params.projectId);
+        const workspaceId = workspaceIdSchema.parse(req.params.workspaceId);
+
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+        roleGuard(role, [Permissions.VIEW_ONLY]);
+
+        const { task } = await getTaskById(taskId, workspaceId, projectId);
+
+        res.status(HTTP_STATUS.OK).json({ message: 'Task fetched successfully', task });
+    });
+
+    public deleteTaskById = asyncHandler(async (req: Request, res: Response) => {
+        const userId = req.user?._id;
+        const taskId = taskIdSchema.parse(req.params.id);
+        const workspaceId = workspaceIdSchema.parse(req.params.workspaceId);
+        const projectId = projectIdSchema.parse(req.params.projectId);
+
+        const { role } = await getMemberRoleInWorkspace(userId, workspaceId);
+        roleGuard(role, [Permissions.DELETE_TASK]);
+
+        await deleteTaskById(taskId, workspaceId, projectId);
+
+        res.status(HTTP_STATUS.OK).json({ message: 'Task deleted successfully' });
     });
 }
 
