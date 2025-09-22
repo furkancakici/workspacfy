@@ -2,7 +2,10 @@ import { Button } from "../ui/button";
 
 const GoogleOauthButton = (props: { label: string }) => {
   const { label } = props;
-  const handleClick = () => {};
+  const handleClick = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+  };
+
   return (
     <Button
       onClick={handleClick}

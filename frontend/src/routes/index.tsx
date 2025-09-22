@@ -1,4 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import AppLayout from "@/layout/app.layout";
+import BaseLayout from "@/layout/base.layout";
+import NotFound from "@/page/errors/NotFound";
 import ProtectedRoute from "./protected.route";
 import AuthRoute from "./auth.route";
 import {
@@ -6,49 +10,51 @@ import {
   baseRoutePaths,
   protectedRoutePaths,
 } from "./common/routes";
-import AppLayout from "@/layout/app.layout";
-import BaseLayout from "@/layout/base.layout";
-import NotFound from "@/page/errors/NotFound";
 
-function AppRoutes() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<BaseLayout />}>
-          {baseRoutePaths.map((route) => (
-            <Route key={route.path} path={route.path} element={route.element} />
-          ))}
-        </Route>
+const router = createBrowserRouter([
+  {
+    element: <BaseLayout />,
+    errorElement: <NotFound />,
+    children: [
+      // Public routes (baseRoutePaths)
+      ...baseRoutePaths.map((r) => ({
+        path: r.path,
+        element: <Suspense fallback={<div />}>{r.element}</Suspense>,
+      })),
 
-        <Route path="/" element={<AuthRoute />}>
-          <Route element={<BaseLayout />}>
-            {authenticationRoutePaths.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Route>
-        </Route>
+      // Auth routes with guard
+      {
+        element: <AuthRoute />,
+        children: [
+          ...authenticationRoutePaths.map((r) => ({
+            path: r.path, // ör: /login, /register
+            element: <Suspense fallback={<div />}>{r.element}</Suspense>,
+          })),
+        ],
+      },
+    ],
+  },
 
-        {/* Protected Route */}
-        <Route path="/" element={<ProtectedRoute />}>
-          <Route element={<AppLayout />}>
-            {protectedRoutePaths.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Route>
-        </Route>
-        {/* Catch-all for undefined routes */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  // Protected subtree
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          ...protectedRoutePaths.map((r) => ({
+            path: r.path, // ör: /, /workspace/:id, /projects
+            element: <Suspense fallback={<div />}>{r.element}</Suspense>,
+          })),
+        ],
+      },
+    ],
+  },
+
+  // Catch-all
+  { path: "*", element: <NotFound /> },
+]);
+
+export default function AppRoutes() {
+  return <RouterProvider router={router} />;
 }
-
-export default AppRoutes;
