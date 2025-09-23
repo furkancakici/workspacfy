@@ -82,11 +82,7 @@ const SignIn = () => {
                                 Email
                               </FormLabel>
                               <FormControl>
-                                <Input
-                                  placeholder="m@example.com"
-                                  className="!h-[48px]"
-                                  {...field}
-                                />
+                                <Input placeholder="m@example.com" {...field} />
                               </FormControl>
 
                               <FormMessage />
@@ -112,11 +108,7 @@ const SignIn = () => {
                                 </a>
                               </div>
                               <FormControl>
-                                <Input
-                                  type="password"
-                                  className="!h-[48px]"
-                                  {...field}
-                                />
+                                <Input type="password" {...field} />
                               </FormControl>
 
                               <FormMessage />
